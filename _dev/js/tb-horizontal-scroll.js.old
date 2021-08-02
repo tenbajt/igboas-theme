@@ -1,0 +1,82 @@
+var $ = jQuery.noConflict();
+
+$(document).ready(function() {
+
+  $('[data-tb-hook="tb-horizontal-scroll"]').each(function(e) {
+    var container = $(this).children().eq(1);
+    var items = container.children();
+
+    var item_outer_width = Math.round(items.outerWidth());
+    var visible_items_count = Math.round(container.outerWidth() / item_outer_width);
+    var total_items_count = items.length;
+
+    /* There is no scroll, so quit */
+		if (visible_items_count >= total_items_count) {
+			return;
+		}
+
+    chevron_left = $(this).children().eq(0);
+    chevron_right = $(this).children().eq(2);
+
+    chevron_left.css('top', (items.outerHeight() - chevron_left.outerHeight()) / 2);
+		chevron_right.css('top', (items.outerHeight() - chevron_right.outerHeight()) / 2);
+
+    chevron_right.show();
+
+    chevron_left.click(function(e) {
+      scroll_to('left');
+    });
+
+    chevron_right.click(function(e) {
+      scroll_to('right');
+    });
+
+    function scroll_to(direction) {
+      if (container.is(':animated')) {
+				return;
+			}
+
+      var scrollBy = visible_items_count * item_outer_width;
+
+			if (direction == 'right') {
+				scrollBy *= (-1);
+			}
+
+      container.animate({
+        scrollLeft: container.scrollLeft() - scrollBy
+      }, 300, 'linear');
+    }
+
+    var scroll_end_timer = null;
+
+    container.scroll(function(e) {
+      var scrolled_items_count = Math.round(container.scrollLeft() / item_outer_width);
+
+      if (scrolled_items_count > 0) {
+        chevron_left.show();
+      } else {
+        chevron_left.hide();
+      }
+
+      if (scrolled_items_count + visible_items_count == total_items_count) {
+        chevron_right.hide();
+      } else {
+        chevron_right.show();
+      }
+
+      clearTimeout(scroll_end_timer);
+
+      if (container.is(':animated')) {
+				return;
+			}
+      scroll_end_timer = setTimeout(function(e) {
+        if (container.is(':animated')) {
+				  return;
+			  }
+        var scrolled_items_count = Math.round(container.scrollLeft() / item_outer_width);
+
+        container.animate({scrollLeft: (scrolled_items_count * item_outer_width)}, 150, 'linear');
+      }, 100);
+    });
+  });
+});

@@ -1,0 +1,44 @@
+/**
+ * Colors
+ */
+
+$black-high:     rgba(0, 0, 0, .87);
+$black-medium:   rgba(0, 0, 0, .60);
+$black-disabled: rgba(0, 0, 0, .38);
+
+$white-high:     rgba(255, 255, 255, .87);
+$white-medium:   rgba(255, 255, 255, .60);
+$white-disabled: rgba(255, 255, 255, .38);
+
+$gray-100: #F7FAFC;
+$gray-200: #EDF2F7;
+$gray-300: #E2E8F0;
+$gray-400: #CBD5E0;
+$gray-500: #A0AEC0;
+$gray-600: #718096;
+$gray-700: #4A5568;
+$gray-800: #2D3748;
+$gray-900: #1A202C;
+
+$green-100: #F0FFF4;
+$green-200: #C6F6D5;
+$green-300: #9AE6B4;
+$green-400: #68D391;
+$green-500: #48BB78;
+$green-600: #38A169;
+$green-700: #2F855A;
+$green-800: #276749;
+$green-900: #22543D;
+
+$primary-color: $green-700;
+
+
+/**
+ * Spacing
+ */
+
+$page-width: 75rem;
+$page-horizontal-padding: 1rem;
+$page-section-padding: 6rem $page-horizontal-padding 7rem;
+$page-section-top-padding: 6rem;
+$page-section-bottom-padding: calc( $page-section-top-padding + 1rem );

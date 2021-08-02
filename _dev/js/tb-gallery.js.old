@@ -1,0 +1,90 @@
+var $ = jQuery.noConflict();
+
+$(document).ready(function() {
+
+	$('[data-tb-hook="tb-gallery"]').each(function(e) {
+		var element = $(this);
+		var container = element.find('.wp-block-gallery');
+		var item = element.find('.blocks-gallery-item');
+
+		/* Add classses to wp-gallery-block and blocks-gallery-item, because they are not exposed in html */
+		container.addClass('row -mx-4 block whitespace-no-wrap overflow-x-auto overflow-y-hidden scrollbar-none');
+		item.addClass('col-12 m-0 w-auto relative inline-block px-4 py-8 overflow-hidden');
+
+		/* Set height to meet 4:3 aspect ratio */
+		item.height(item.width() / 4 * 3);
+
+		var item_outer_width = Math.round(item.outerWidth());
+    var visible_items_count = Math.round(container.outerWidth() / item_outer_width);
+    var total_items_count = container.children().length;
+
+    /* There is no scroll, so quit */
+		if (visible_items_count >= total_items_count) {
+			return;
+		}
+
+    chevron_left = element.children('i').first();
+    chevron_right = element.children('i').last();
+
+    chevron_left.css('top', (item.outerHeight() - chevron_left.outerHeight()) / 2 + item.position().top);
+		chevron_right.css('top', (item.outerHeight() - chevron_right.outerHeight()) / 2 + item.position().top);
+
+    chevron_right.show();
+
+    chevron_left.click(function(e) {
+      scroll_to('left');
+    });
+
+    chevron_right.click(function(e) {
+      scroll_to('right');
+    });
+
+    function scroll_to(direction) {
+      if (container.is(':animated')) {
+				return;
+			}
+
+      var scrollBy = visible_items_count * item_outer_width;
+
+			if (direction == 'right') {
+				scrollBy *= (-1);
+			}
+
+      container.animate({
+        scrollLeft: container.scrollLeft() - scrollBy
+      }, 300, 'linear');
+    }
+
+    var scroll_end_timer = null;
+
+    container.scroll(function(e) {
+      var scrolled_items_count = Math.round(container.scrollLeft() / item_outer_width);
+
+      if (scrolled_items_count > 0) {
+        chevron_left.show();
+      } else {
+        chevron_left.hide();
+      }
+
+      if (scrolled_items_count + visible_items_count == total_items_count) {
+        chevron_right.hide();
+      } else {
+        chevron_right.show();
+      }
+
+      clearTimeout(scroll_end_timer);
+
+      if (container.is(':animated')) {
+				return;
+			}
+      scroll_end_timer = setTimeout(function(e) {
+        if (container.is(':animated')) {
+				  return;
+			  }
+        var scrolled_items_count = Math.round(container.scrollLeft() / item_outer_width);
+
+        container.animate({scrollLeft: (scrolled_items_count * item_outer_width)}, 150, 'linear');
+      }, 100);
+    });
+	});
+});

@@ -1,0 +1,49 @@
+document.querySelectorAll( '[data-toggle="arrow"]' ).forEach( function( item ) {
+
+  var Scroll = {
+    target    : document.querySelector( item.dataset.target ),
+    duration : 300,
+    callback : {},
+  };
+
+  Scroll.padding = parseInt( window.getComputedStyle( Scroll.target ).paddingLeft );
+
+  Scroll.callback.start = function() {
+    Scroll.target.dataset.animated = 'true';
+  };
+
+  Scroll.callback.progress = function( percentage ) {
+    Scroll.target.scrollLeft = Scroll.initialPosition + ( Scroll.distance * easeInOutQuad( percentage ) );
+  };
+
+  Scroll.callback.end = function() {
+    Scroll.target.dataset.animated = 'false';
+  };
+
+  item.addEventListener( 'click', function( event ) {
+    event.preventDefault();
+
+    if ( Scroll.target.dataset.animated === 'true' ) {
+      return;
+    }
+
+    var currentItem = parseInt( Scroll.target.dataset.activeItem );
+    
+    if ( item.dataset.direction === 'prev' ) {
+      var requestedItem = currentItem - 1;
+    } else {
+      var requestedItem = currentItem + 1;
+    }
+
+    if ( requestedItem < 0 || requestedItem >= Scroll.target.children.length ) {
+      return;
+    }
+
+    Scroll.target.dataset.activeItem = requestedItem;
+
+    Scroll.initialPosition = Scroll.target.scrollLeft;
+    Scroll.distance = Scroll.target.children[requestedItem].offsetLeft - Scroll.padding - Scroll.initialPosition;
+
+    animate( Scroll.callback, Scroll.duration );
+  });
+});

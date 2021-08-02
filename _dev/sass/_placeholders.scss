@@ -1,0 +1,51 @@
+%btn {
+  padding: 1rem 1.25rem;
+  border-radius: .125rem;
+  font-size: .875rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+}
+%btn--filled {
+  background-color: $green-600;
+  color: white;
+}
+%btn--filled:hover {
+  background-color: $green-700;
+  color: white;
+  text-decoration: none;
+}
+
+
+%card {
+  display: block;
+  margin: 0 .125rem .375rem;
+  border: none;
+  border-radius: .5rem;
+  box-shadow: 0 .125rem .25rem rgba(black, .1);
+  background-color: white;
+  overflow: hidden;
+  z-index: 1000;
+}
+%card:hover {
+  text-decoration: none;
+}
+%card--hoverable {
+  transition: box-shadow 150ms ease-in-out, transform 150ms ease-in-out;
+}
+%card--hoverable:hover {
+  box-shadow: 0 1rem 2rem rgba(black, .1);
+  transform: translateY(-.25rem);
+}
+
+%chevron:hover {
+  box-shadow: 0 0 0 .5rem rgba($green-600, .3);
+  background-color: $green-700;
+}
+
+%site-content-wrapper {
+  max-width: 75rem;
+  margin: 0 auto;
+}

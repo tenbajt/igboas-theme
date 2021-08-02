@@ -1,0 +1,37 @@
+var $ = jQuery.noConflict();
+
+$(document).ready(function() {
+
+	$('[data-tb-hook="tb-gallery-preview"]').each(function(e) {
+		var element = $(this);
+		var preview = element.children(':first');
+		var list = element.find('.wp-block-gallery');
+		var item = element.find('.blocks-gallery-item');
+
+		/* Add classses to wp-gallery-block and blocks-gallery-item, because they are not exposed in html */
+		list.addClass('row -mx-1 block whitespace-no-wrap overflow-x-auto overflow-y-hidden scrollbar-none');
+		item.addClass('col-4 col-sm-2 m-0 relative inline-block px-1 py-2 overflow-hidden cursor-pointer');
+
+		/* Set height to meet 4:3 aspect ratio */
+		item.height(item.width() / 4 * 3);
+
+		/* There are no images to swap in */
+		if (list.children().length < 2) {
+			return;
+		}
+
+		item.click(function(e) {
+			/* Replace preview image with clicked thumbnail */
+			preview.css('background-image', 'url(' + $(this).find('img').attr('src') + ')');
+			
+			/* Remove selection from previous thumbnail */
+			item.removeClass('after:border-inset-solid-green-700');
+			
+			/* Add selection to current thumbnail */
+			$(this).addClass('after:border-inset-solid-green-700');
+		});
+
+		/* Load first image in to preview */
+		item.first().trigger('click');
+	});
+});

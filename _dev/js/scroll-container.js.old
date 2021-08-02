@@ -1,0 +1,36 @@
+document.querySelectorAll( '[data-toggle="scroll"]' ).forEach( function( item ) {
+
+  var Scroll = {
+    startPosition : null,
+    started : false,
+    callback : {},
+  };
+
+  Scroll.callback.start = function() {
+    Scroll.started = true;
+    console.log()
+  };
+
+  Scroll.callback.end = function() {
+    Scroll.started = false;
+    console.log( 'End' );
+  }
+
+  item.addEventListener( 'scroll', function( event ) {
+    event.preventDefault();
+
+    if ( Scroll.startPosition === null ) {
+      Scroll.startPosition = event.target.scrollLeft;
+    }
+
+    console.log( event.target.scrollLeft );
+
+    if ( (Scroll.startPosition + 292) >= event.target.scrollLeft ) {
+      //event.target.scrollLeft = 292;
+    }
+
+    window.clearTimeout( Scroll.timer );
+
+    Scroll.timer = setTimeout( Scroll.callback.end, 45 );
+  });
+});
